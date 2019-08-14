@@ -42,6 +42,8 @@
     <!-- Slim CSS -->
     <link rel="stylesheet" href="{{ asset('css/slim.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('css/dropzone/dropzone.min.css') }}">
+
   </head>
   <body>
     <div class="slim-header">
@@ -83,7 +85,7 @@
     <div class="slim-mainpanel">
       <div class="container">
         <div class="slim-pageheader" style="display: block">
-          <h6 class="slim-pagetitle">Form Elements</h6>
+          <h6 class="slim-pagetitle">@isset($title) {{ $title }} @endisset</h6>
         </div>
         <div class="section-wrapper">
         
@@ -117,6 +119,7 @@
     <script src="{{ asset('js/ResizeSensor.js') }}"></script>
     <!--<script src="{{ asset('js/dashboard.js') }}"></script>-->
     <script src="{{ asset('js/slim.js') }}"></script>
+    <script src="{{ asset('js/dropzone/dropzone.min.js') }}"></script>
 
     <script>
       $(function(){
@@ -175,6 +178,41 @@
                 ['#DC3545', '#17A2B8', '#6610F2', '#fa1e81', '#72e7a6']
             ]
         });
+
+        var uploadedDocumentMap = {};
+        Dropzone.options.myDropzone = {
+          url: "{{ route('image.store') }}",
+          maxFilesize: 2, // MB
+          acceptedFiles: ".jpeg,.jpg,.png,.gif",
+          addRemoveLinks: true,
+          headers: {
+            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+          },
+          success: function (file, response) {
+            $('form').append('<input type="hidden" name="document[]" value="' + response.name + '">');
+            uploadedDocumentMap[file.name] = response.name;
+          },
+          removedfile: function (file) {
+            file.previewElement.remove();
+            name = uploadedDocumentMap[file.name];
+            $('form').find('input[name="document[]"][value="' + name + '"]').remove();
+          },
+          init: function () {
+             @if(isset($hotel) && $hotel->images)
+              var images = {!! json_encode($hotel->images) !!};
+              for (var i in images) {
+                var image = images[i];
+                this.options.addedfile.call(this, image);
+                image.previewElement.classList.add('dz-complete');
+                var source = '{{ url("/images/") }}/thumb_' + image.name;
+                image.previewElement.getElementsByTagName("IMG")[0].src = source;
+                $('form').append('<input type="hidden" name="document[]" value="' + image.name + '">');
+                uploadedDocumentMap[image.name] = image.name;
+              }
+              $('.dz-size').remove();
+            @endif
+          }
+        }
 
       });
     </script>

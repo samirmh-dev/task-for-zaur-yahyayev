@@ -18,3 +18,4 @@ Route::get('/admin', function() {
 });
 Route::resource('/admin/flight', 'AdminFlightController');
 Route::resource('/admin/hotel', 'AdminHotelController');
+Route::post('/image/store', 'ImageController@store')->name('image.store');

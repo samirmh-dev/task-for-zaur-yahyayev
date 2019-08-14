@@ -1,91 +1,56 @@
 @extends('admin/layout')
 
 @section('content')
-  <div class="form-layout form-layout-4">
-    <form method="post" action="{{ route('flight.store') }}">
+  <div class="table-responsive">
+    <table class="table table-hover mg-b-0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>City</th>
+          <th>Stars</th>
+          <th>Price</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+       
+        @isset ($hotels)
+          @foreach ($hotels as $hotel)
+
+            <tr>
+              <th scope="row">{{ $hotel->id }}</th>
+              <td>{{ $hotel->name }}</td>
+              <td>{{ $hotel->city }}</td>
+              <td>{{ $hotel->stars }}</td>
+              <td>{{ $hotel->price }}</td>
+
+              <td><a href="{{ route('hotel.edit', ['id' => $hotel->id]) }}">Edit</a></td>
+              <td>
+                <a href="{{ route('hotel.destroy', ['id' => $hotel->id]) }}"
+                   onclick="event.preventDefault();
+                              document.getElementById('delete-hotel').action = '{{ route("hotel.destroy", ["id" => $hotel->id]) }}';
+                                document.getElementById('delete-hotel').submit();">
+                    Delete
+                </a>
+              </td>
+            </tr>
+
+          @endforeach
+        @endisset
+
+      </tbody>
+    </table>
+  </div><!-- table-responsive -->
+
+  <form id="delete-hotel" method="post" style="display: none;">
+      @method('delete')
       @csrf
-      <div class="row">
-        <label class="col-sm-4 form-control-label">Airline name: <span class="tx-danger">*</span></label>
-        <div class="col-sm-8 mg-t-10 mg-sm-t-0">
-          <input type="text" name="airline" class="form-control" placeholder="Enter airline name">
-        </div>
-      </div><!-- row -->
-      <div class="row mg-t-20">
-        <label class="col-sm-4 form-control-label">Plane type: <span class="tx-danger">*</span></label>
-        <div class="col-sm-8 mg-t-10 mg-sm-t-0">
-          <input type="text" name="plane" class="form-control" placeholder="Enter plane type">
-        </div>
-      </div>
-      <div class="row mg-t-20">
-        <label class="col-sm-4 form-control-label">Estimate arrival date: <span class="tx-danger">*</span></label>
-        <div class="col-sm-8 mg-t-10 mg-sm-t-0">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <i class="icon ion-calendar tx-16 lh-0 op-6"></i>
-              </div>
-            </div>
-            <input type="text" name="date" class="form-control fc-datepicker" placeholder="MM/DD/YYYY">
-          </div>
-        </div>
-      </div>
-      <div class="row mg-t-20">
-        <label class="col-sm-4 form-control-label">Estimate arrival time: <span class="tx-danger">*</span></label>
-        <div class="col-sm-8 mg-t-10 mg-sm-t-0">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <i class="fa fa-clock-o tx-16 lh-0 op-6"></i>
-              </div>
-            </div><!-- input-group-prepend -->
-            <input id="tpBasic" type="text" name="time" class="form-control" placeholder="Set time">
-          </div>
-        </div>
-      </div>
-      <div class="row mg-t-20">
-        <label class="col-sm-4 form-control-label">Price: <span class="tx-danger">*</span></label>
-        <div class="col-sm-8 mg-t-10 mg-sm-t-0">
-          <input type="text" name="price" class="form-control" placeholder="Enter price">
-        </div>
-      </div>
-      <div class="row mg-t-20">
-        <label class="col-sm-4 form-control-label">Destination: <span class="tx-danger">*</span></label>
-        <div class="col-sm-8 mg-t-10 mg-sm-t-0">
-          <input type="text" name="destination" class="form-control" placeholder="Enter destination">
-        </div>
-      </div>
-      <div class="row mg-t-20">
-        <label class="col-sm-4 form-control-label">Departure: <span class="tx-danger">*</span></label>
-        <div class="col-sm-8 mg-t-10 mg-sm-t-0">
-          <input type="text" name="departure" class="form-control" placeholder="Enter departure">
-        </div>
-      </div>
-      <div class="row mg-t-20">
-        <label class="col-sm-4 form-control-label">Adult: <span class="tx-danger">*</span></label>
-        <div class="col-sm-8 mg-t-10 mg-sm-t-0">
-          <input type="text" name="adult" class="form-control" placeholder="Enter count">
-        </div>
-      </div>
-      <div class="row mg-t-20">
-        <label class="col-sm-4 form-control-label">Short description: <span class="tx-danger">*</span></label>
-        <div class="col-sm-8 mg-t-10 mg-sm-t-0">
-          <textarea rows="2" name="description" class="form-control" placeholder="Enter short description"></textarea>
-        </div>
-      </div>
+  </form>
 
-      <div class="row mg-t-20">
-        <label class="col-sm-4 form-control-label">Choose file: <span class="tx-danger">*</span></label>
-        <div class="col-sm-8 mg-t-10 mg-sm-t-0">
-           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="customFile">
-            <label class="custom-file-label" for="customFile">Choose file</label>
-          </div><!-- custom-file -->
-        </div>
-      </div>
-
-      <div class="form-layout-footer mg-t-30">
-        <button type="submit" class="btn btn-primary bd-0">Submit Form</button>
-      </div><!-- form-layout-footer -->
-    </form>
-  </div><!-- form-layout -->
+  <div class="form-layout-footer mg-t-30">
+    <a href="{{ route('hotel.create') }}" class="btn btn-primary bd-0">Add new hotel</a>
+  </div>
+    
 @endsection

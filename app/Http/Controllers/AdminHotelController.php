@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Hotel;
+use App\Http\Requests\HotelValidate;
 
 class AdminHotelController extends Controller
 {
@@ -13,7 +15,10 @@ class AdminHotelController extends Controller
      */
     public function index()
     {
-        return view('admin/hotel/index');
+        $hotels = Hotel::all();
+        $title = 'Hotels list';
+
+        return view('admin/hotel/index', compact('hotels', 'title'));
     }
 
     /**
@@ -23,7 +28,8 @@ class AdminHotelController extends Controller
      */
     public function create()
     {
-        return view('admin/hotel/create');
+        $title = 'Add new hotel';
+        return view('admin/hotel/create', compact('title'));
     }
 
     /**
@@ -32,9 +38,20 @@ class AdminHotelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(HotelValidate $request)
     {
-        //
+        $created = Hotel::create($request->all());
+
+        if ($request->has('document')) {
+            $imageNames = [];
+            foreach ($request->document as $file) {
+                $imageNames[] = ['name' => $file];
+            }
+
+            $created->images()->createMany($imageNames);
+        }
+       
+        return redirect('admin/hotel');
     }
 
     /**
@@ -56,7 +73,10 @@ class AdminHotelController extends Controller
      */
     public function edit($id)
     {
-        //
+        $hotel = Hotel::findOrFail($id);
+        $title = 'Edit hotel';
+
+        return view('admin/hotel/edit', compact('hotel', 'title'));
     }
 
     /**
@@ -66,9 +86,21 @@ class AdminHotelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(HotelValidate $request, Hotel $hotel)
     {
-        //
+        $hotel->update($request->all());
+
+        if ($request->has('document')) {
+            $imageNames = [];
+            foreach ($request->document as $file) {
+                $imageNames[] = ['name' => $file];
+            }
+
+            $hotel->images()->delete();
+            $hotel->images()->createMany($imageNames);
+        }
+
+        return redirect('admin/hotel');
     }
 
     /**
@@ -77,8 +109,11 @@ class AdminHotelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Hotel $hotel)
     {
-        //
+        $hotel->images()->delete();
+        $hotel->delete();
+
+        return redirect('admin/hotel');
     }
 }

@@ -16,7 +16,9 @@ class AdminFlightController extends Controller
     public function index()
     {
         $flights = Flight::all();
-        return view('admin/flight/index', compact('flights'));
+        $title = 'Flights list';
+
+        return view('admin/flight/index', compact('flights', 'title'));
     }
 
     /**
@@ -26,7 +28,8 @@ class AdminFlightController extends Controller
      */
     public function create()
     {
-        return view('admin/flight/create');
+        $title = 'Add new flight';
+        return view('admin/flight/create', compact('title'));
     }
 
     /**
@@ -66,7 +69,9 @@ class AdminFlightController extends Controller
     public function edit($id)
     {
         $flight = Flight::findOrFail($id);
-        return view('admin/flight/edit', compact('flight'));
+        $title = 'Edit flight';
+
+        return view('admin/flight/edit', compact('flight', 'title'));
     }
 
     /**
