@@ -27,6 +27,10 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/home';
 
+    protected function loggedOut() {
+        return redirect()->route('login');
+    }
+
     /**
      * Create a new controller instance.
      *

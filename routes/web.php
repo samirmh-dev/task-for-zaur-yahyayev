@@ -19,3 +19,10 @@ Route::get('/admin', function() {
 Route::resource('/admin/flight', 'AdminFlightController');
 Route::resource('/admin/hotel', 'AdminHotelController');
 Route::post('/image/store', 'ImageController@store')->name('image.store');
+
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login_form');
+Route::post('login', 'LoginController@login')->name('login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
+
+Route::get('/home', 'HomeController@index')->name('home');

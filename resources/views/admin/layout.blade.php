@@ -52,13 +52,18 @@
           <div class="dropdown dropdown-c">
             <a href="#" class="logged-user" data-toggle="dropdown">
               <img src="http://via.placeholder.com/500x500" alt="">
-              <span>Katherine</span>
+              <span>@if(auth()->user() !== null) {{ auth()->user()->name }} @endif</span>
               <i class="fa fa-angle-down"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
               <nav class="nav">
-                <a href="page-signin.html" class="nav-link"><i class="icon ion-forward"></i> Sign Out</a>
+                <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                  <i class="icon ion-forward"></i> Sign Out
+                </a>
               </nav>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  @csrf
+              </form>
             </div><!-- dropdown-menu -->
           </div><!-- dropdown -->
         </div><!-- header-right -->
