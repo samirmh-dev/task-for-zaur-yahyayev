@@ -11,7 +11,9 @@
 |
 */
 
-/*Route::get('/', 'FrontController@index');*/
+Route::get('/', 'FrontController@index');
+Route::post('/flight-search', 'FrontController@searchFlights')->name('flight-search');
+Route::post('/hotel-search', 'FrontController@searchHotels')->name('hotel-search');
 
 Route::get('/admin', function() {
 	return view('admin/flight/index');
@@ -20,8 +22,8 @@ Route::resource('/admin/flight', 'AdminFlightController');
 Route::resource('/admin/hotel', 'AdminHotelController');
 Route::post('/image/store', 'ImageController@store')->name('image.store');
 
-Route::get('login', 'Auth\LoginController@showLoginForm')->name('login_form');
 Route::post('login', 'LoginController@login')->name('login');
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login_form');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 

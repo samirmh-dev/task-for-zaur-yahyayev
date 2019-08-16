@@ -24,14 +24,14 @@ class FlightValidate extends FormRequest
     public function rules()
     {
         return [
-            'airline' => 'required|min:3',
-            'plane' => 'required|min:3',
+            'airline' => 'required|min:2',
+            'plane' => 'required|min:2',
             'arrival_date' => 'required|date_format:Y-m-d',
             'arrival_time' => 'required|date_format:g:ia',
             'price' => 'required|numeric|min:0',
-            'destination' => 'required|min:3',
-            'departure' => 'required|min:3',
-            'adult' => 'required|integer|min:0|max:65000',
+            'destination' => 'required|min:2',
+            'departure' => 'required|min:2',
+            'adult' => 'required|integer|min:1|max:65000',
             'description' => 'nullable'
         ];
     }
