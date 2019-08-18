@@ -19,6 +19,7 @@ class CreateFlightsTable extends Migration
             $table->string('plane');
             $table->date('arrival_date');
             $table->time('arrival_time');
+            $table->date('return_date');
             $table->float('price');
             $table->string('destination');
             $table->string('departure');

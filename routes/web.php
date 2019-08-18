@@ -13,6 +13,7 @@
 
 Route::get('/', 'FrontController@index');
 Route::post('/flight-search', 'FrontController@searchFlights')->name('flight-search');
+Route::get('/flight-pagination', 'FrontController@paginateFlights');
 Route::post('/hotel-search', 'FrontController@searchHotels')->name('hotel-search');
 
 Route::get('/admin', function() {

@@ -25,7 +25,7 @@ class FlightSearchValidate extends FormRequest
     {
         return [
             'departure' => 'required|date_format:Y-m-d',
-            'return' => 'required|date_format:Y-m-d',
+            'return' => 'nullable|date_format:Y-m-d',
             'from' => 'required|min:2',
             'to' => 'required|min:2',
             'adult' => 'required|integer|min:1'
