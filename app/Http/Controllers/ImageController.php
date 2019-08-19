@@ -16,7 +16,7 @@ class ImageController extends Controller
         $currentTime = date("dmy_His");
         $imageName = $filename . '_' . $currentTime . '.' . $extension;
         $imageThumbName = 'thumb_' . $filename . '_' . $currentTime . '.' . $extension;
-        $path = public_path('images');
+        $path = public_path('images/uploads');
         $image->move($path, $imageName);
         $bigImage = $path . '/' . $imageName;
         $smallImage = $path . '/' . $imageThumbName;

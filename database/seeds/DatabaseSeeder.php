@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         //factory(\App\Flight::class, 2)->create();
-        $this->call(FlightSeeder::class);
+        //$this->call(FlightSeeder::class);
+        $this->call(HotelSeeder::class);
     }
 }

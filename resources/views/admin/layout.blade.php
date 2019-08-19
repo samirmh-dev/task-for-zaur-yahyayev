@@ -209,7 +209,8 @@
                 var image = images[i];
                 this.options.addedfile.call(this, image);
                 image.previewElement.classList.add('dz-complete');
-                var source = '{{ url("/images/") }}/thumb_' + image.name;
+                //var source = '{{ url("/images/") }}/thumb_' + image.name;
+                var source = '{{ asset("images/uploads") }}/thumb_' + image.name;
                 image.previewElement.getElementsByTagName("IMG")[0].src = source;
                 $('form').append('<input type="hidden" name="document[]" value="' + image.name + '">');
                 uploadedDocumentMap[image.name] = image.name;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Flight;
+use App\Hotel;
 use App\Http\Requests\FlightSearchValidate;
 use App\Http\Requests\HotelSearchValidate;
 
@@ -41,6 +42,22 @@ class FrontController extends Controller
         return view('front/flight-result', compact('flights', 'flightCount', 'first', 'filter'));
     }
 
+    public function getHotels($request)
+    {
+        $query = Hotel::where('city', 'like', '%' . $request->city . '%');
+
+        $hotels = $query->paginate(3);
+        $hotels->withPath('hotel-pagination');
+        $hotelCount = $hotels->total();
+        $first = $hotels->first();
+
+        $filter = array(
+            'city' => $request->city
+        );
+
+        return view('front/hotel-result', compact('hotels', 'hotelCount', 'first', 'filter'));
+    }
+
     public function searchFlights(FlightSearchValidate $request)
     {
         return $this->getFlights($request);
@@ -53,6 +70,11 @@ class FrontController extends Controller
 
     public function searchHotels(HotelSearchValidate $request)
     {
-    	dd($request->all());
+    	return $this->getHotels($request);
+    }
+
+     public function paginateHotels(Request $request)
+    {
+        return $this->getHotels($request);
     }
 }
